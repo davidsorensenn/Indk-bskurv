@@ -10,6 +10,7 @@ namespace Indkøbskurv
     {
         static void Main(string[] args)
         {
+            
         }
     }
 }

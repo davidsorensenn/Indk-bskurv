@@ -7,12 +7,12 @@ using System.Text.Json;
 
 namespace Indkøbskurv
 {
-    internal class Indkøbskurv
+    public class Indkøbskurv
     {
-        public List<Produkter> produkter  { get; set; }
+        internal static List<Produkter> produkter  { get; set; }
+        
 
-
-        public static string Order(List<Produkter> items)
+        internal string Order(List<Produkter> items)
         {
             //create new lists of items
             List<Produkter> itemsOrdered = new List<Produkter>();
@@ -31,6 +31,7 @@ namespace Indkøbskurv
                     //if item is not in list, add to list
                     itemsOrdered.Add(item);
                 }
+                
                 
             }
             return JsonSerializer.Serialize<List<Produkter>>(itemsOrdered);
