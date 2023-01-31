@@ -12,11 +12,16 @@ namespace Indkøbskurv
 {
     internal class Program
     {
-        public static List<Produkt> items = GetProductsFromFilename("Products.json");
+        //states
+        public static List<Produkt> Products = GetProductsFromFilename("Products.json");
+        
+        public static List<Produkt> shoppingBag = new List<Produkt>();
+        public static Kunde kunde = CreateCustomer();
+
         static void Main(string[] args)
         {
             //create customer
-            Kunde kunde = CreateCustomer();
+            
             while (true)
             {
                 bool valid = false;
@@ -36,26 +41,28 @@ namespace Indkøbskurv
                 {
                     case "a":
                         //Add to cart
-                        foreach (Produkt item in items)
-                        {
-                            Console.WriteLine(item.Title + " | " + item.Price + "kr. | "+item.Quantity);
-                        }
+                        DisplayItemsInProducts();
+                        
                         Console.WriteLine(Environment.NewLine + "Do you want to buy something [yes | no]");
                         string choice = Console.ReadLine();
                         if(choice =="yes"||choice == "y")
                         {
-                            AddToCart(kunde);
+                            Console.Clear();
+
+                            int id = GetIdFromProductsIndex();
+                            int amount = GetAmount();
+                            AddToCart(id, amount);
+                            foreach(Produkt p in shoppingBag)
+                            {
+                                Console.WriteLine(p.Title+" | " + p.Quantity);
+
+                            }
                             Console.ReadKey();
                         }
                        
                         break;
                     case "b":
-                        List<Produkt> Products = kunde.indkøbskurv.GetShoppinglist();
-                        foreach (Produkt item in Products)
-                        {
-                            Console.WriteLine(item.Title + " | " + item.Price + "kr. | " + item.Quantity);
-                        }
-                        RemoveFromCart(kunde);
+                        
                         break;
                 }
 
@@ -87,77 +94,119 @@ namespace Indkøbskurv
                 return JsonSerializer.Deserialize<List<Produkt>>(productsJson, options);
             }
         }
-        static void AddToCart(Kunde kunde)
-        {
-            //choose Produkt to Indkøbskurv
-            bool valid = false;
-            while (!valid)
+        static void DisplayItemsInProducts(){
+            foreach (Produkt item in Products)
             {
-                Console.WriteLine("What do you want to buy?");
-                string input = Console.ReadLine();
-                int index = 0;
-                int.TryParse(input, out index);
-                if (index != 0 && index <= items.Count)
-                {
-                    index--;
-                    kunde.indkøbskurv.AddtoShoppinglist(items[index]);
-                    valid = true;
-                    Console.Clear();
-                    Console.WriteLine("{0} was added to cart.", items[index].Title);
-                    if (items[index].Quantity > 1)
-                    {
-                        items[index].Quantity--;
-                    }
-                    else if (items[index].Quantity == 1)
-                    {
-                        items.RemoveAt(index);
-                    }
-                }
+                Console.WriteLine(item.Title + " | " + item.Price + "kr. | " + item.Quantity);
             }
-            List<Produkt> produkter = kunde.indkøbskurv.GetShoppinglist();
-            
-            
         }
-        static void RemoveFromCart(Kunde kunde)
+        static void AddToCart(int id, int amount)
         {
-            //choose Produkt
+            //loop through products
+            foreach (Produkt item in Products)
+            {
+                //check if id matches
+                if (item.Id == id)
+                {
+                    //check if item is in stock
+                    if (item.Quantity >= amount)
+                    {
+                        //if item is in ShoppingBag increese quantity by amount
+                        var itemInList = shoppingBag.FirstOrDefault(x => x.Id == item.Id);
+                        //store the item in variable and manage quantity
+                        if (itemInList != null)
+                        {
+                            //if item is in ShoppingBag increese quantity by amount
+                            itemInList.Quantity+=amount;
+                        }
+                        else
+                        {
+                            //if item is not in ShoppingBag set quantity and add item
+                            Produkt transaktion = new Produkt();
+                            transaktion.Title = item.Title;
+                            transaktion.Price = item.Price;
+                            transaktion.Id = item.Id;
+                            transaktion.Quantity = amount;
+                            shoppingBag.Add(transaktion);
+                        }
+                        //Decrees quantity of item in stock by amount
+                        item.Quantity -= amount;
+                        Console.WriteLine("{0} was added to cart.", item.Title);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Out of stock");
+                    }
+                    break;
+                }
+                
+            }
+        }
+        static int GetIdFromProductsIndex()
+        {
+            int output = -1;
             bool valid = false;
             while (!valid)
             {
-                Console.WriteLine("What do you want to remove?");
+               
+                DisplayItemsInProducts();
+                Console.WriteLine(Environment.NewLine + "Select item by index or full product name");
                 string input = Console.ReadLine();
-                int index = 0;
-                List<Produkt> listOfProducts = kunde.indkøbskurv.GetShoppinglist();
-
-                int.TryParse(input, out index);
-                if (index != 0 && index <= listOfProducts.Count)
+                int index;
+                bool isInt = int.TryParse(input, out index);
+                if(isInt == true && index < Products.Count)
                 {
-                    index--;
-                    Produkt removedItem = listOfProducts[index];
-                    kunde.indkøbskurv.RemoveFromShoppinglist(index);
+                    output = Products[index].Id;
                     valid = true;
-                    Console.Clear();
-                    Console.WriteLine("{0} was removed from cart.",removedItem.Title);
-                    bool exists = false;
-                   
-                    foreach(Produkt item in items)
+
+
+                }
+                else 
+                {
+                    
+                    var itemInList = Products.FirstOrDefault(x => x.Title.ToLower() == input.ToLower().Trim());
+                    if (itemInList != null)
                     {
-                        if (item.Id == removedItem.Id)
-                        {
-                            exists = true;
-                            item.Quantity++;
-                        }
+                        output = itemInList.Id;
+                        valid = true;
                     }
-                    if (exists == false)
+                    else
                     {
-                        items.Add(removedItem);
+                        Console.Clear();
+                        Console.WriteLine("We did not find a mach to \"{0}\"" , input);
+                        Console.WriteLine("");
                     }
                 }
-                else { break;}
+                
+
             }
-            List<Produkt> produkter = kunde.indkøbskurv.GetShoppinglist();
+            return output;
+        }
+
+        static int GetAmount()
+        {
+            int output = 0;
+            bool valid = false;
+            while (!valid)
+            {
+                Console.WriteLine("How many do you want?");
+                string input = Console.ReadLine();
+                int amount;
+                bool isInt = int.TryParse(input, out amount);
+                if (isInt == true)
+                {
+                    output = amount;
+                    valid = true;
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("Please type a real number");
+                }
 
 
+            }
+            return output;
         }
     }
 }
