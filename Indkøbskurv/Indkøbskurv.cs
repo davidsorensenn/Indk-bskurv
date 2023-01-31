@@ -9,22 +9,22 @@ namespace Indkøbskurv
 {
     public class Indkøbskurv
     {
-        internal static List<Produkter> produkter  { get; set; }
-        
+        List<Produkt> produkter { get; set; }
 
-        internal string Order(List<Produkter> items)
+
+        internal string Order(List<Produkt> items)
         {
             //create new lists of items
-            List<Produkter> itemsOrdered = new List<Produkter>();
+            List<Produkt> itemsOrdered = new List<Produkt>();
             //loop through items and add to items ordered
             foreach (var item in items)
             {
                 //check if item is already in list
-                var itemInList = itemsOrdered.FirstOrDefault(x => x.id == item.id);
+                var itemInList = itemsOrdered.FirstOrDefault(x => x.Id == item.Id);
                 if (itemInList != null)
                 {
                     //if item is in list, increase quantity
-                    itemInList.quantity += item.quantity;
+                    itemInList.Quantity += item.Quantity;
                 }
                 else
                 {
@@ -35,9 +35,35 @@ namespace Indkøbskurv
                 
             }
             
-            return JsonSerializer.Serialize<List<Produkter>>(itemsOrdered);
+            return JsonSerializer.Serialize<List<Produkt>>(itemsOrdered);
 
 
+        }
+        internal void AddtoShoppinglist( Produkt produkt)
+        {
+            
+
+            
+            produkter.Add(produkt);
+
+
+        }
+        internal void RemoveFromShoppinglist(int index)
+        {
+          
+                produkter.RemoveAt(index);
+
+            
+        }
+
+
+        public Indkøbskurv()
+        {
+            produkter = new List<Produkt>();
+        }
+        internal List<Produkt> GetShoppinglist()
+        {
+            return produkter;
         }
     }
 }

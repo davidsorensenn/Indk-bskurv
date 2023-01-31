@@ -8,11 +8,13 @@ using System.Text.Json;
 
 namespace Indkøbskurv
 {
-    internal class Produkter
+    internal class Produkt
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public int Price { get; set; }
+        public float Price { get; set; }
         public int Quantity { get; set; }
+
+        
     }
 }

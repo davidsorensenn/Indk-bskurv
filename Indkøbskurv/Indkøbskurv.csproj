@@ -72,8 +72,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Indkøbskurv.cs" />
-    <Compile Include="Kunder.cs" />
-    <Compile Include="Produkter.cs" />
+    <Compile Include="Kunde.cs" />
+    <Compile Include="Produkt.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

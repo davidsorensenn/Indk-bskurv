@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Indkøbskurv
 {
-    public class Kunder
+    public class Kunde
     {
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
