@@ -159,6 +159,7 @@ namespace Indkøbskurv
                     output = Products[index].Id;
                     valid = true;
 
+
                 }
                 else 
                 {
