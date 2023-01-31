@@ -1,0 +1,68 @@
+﻿[ 
+  {
+    "Id": 1,
+    "Title": "Asus Zenbook 14X" ,
+    "Price": 10799,
+    "Quantity": 14
+  },
+  {
+    "Id": 2,
+    "Title": "iPhone 14 Pro Max",
+    "Price": 11579,
+    "Quantity": 158
+  },
+  {
+    "Id": 3,
+    "Title": "Samsung 55 Q68B 4K QLED TV",
+    "Price": 6999,
+    "Quantity": 111
+  },
+  {
+    "Id": 4,
+    "Title": "Lenovo IdeaPad bærbar computer",
+    "Price": 4999,
+    "Quantity": 122
+  },
+  {
+    "Id": 5,
+    "Title": "Samsung Galaxy A04s 4G",
+    "Price": 999,
+    "Quantity": 102
+  },
+  {
+    "Id": 6,
+    "Title": "Lenovo Legion T5 stationær gaming computer",
+    "Price": 9499,
+    "Quantity": 34
+  },
+  {
+    "Id": 7,
+    "Title": "Apple Watch SE 2nd Gen 44 mm LTE",
+    "Price": 3199,
+    "Quantity": 33
+  },
+  {
+    "Id": 8,
+    "Title": "Philips Lumea Prestige IPL hårfjernerlys",
+    "Price": 3499,
+    "Quantity": 45
+  },
+  {
+    "Id": 9,
+    "Title": "Indesit køleskab/fryser",
+    "Price": 2999,
+    "Quantity": 21
+  },
+  {
+    "Id": 10,
+    "Title": "Lenovo G34W buet gaming-skærm",
+    "Price": 4699,
+    "Quantity": 129
+  },
+  {
+    "Id": 11,
+    "Title": "Samsung Q610B soundbar med subwoofer",
+    "Price": 4999,
+    "Quantity": 198
+  }
+]

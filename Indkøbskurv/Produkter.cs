@@ -10,15 +10,9 @@ namespace Indkøbskurv
 {
     internal class Produkter
     {
-        public int id { get; set; }
-        public string title { get; set; }
-        public int price { get; set; }
-        public int quantity { get; set; }
-
-       
-         
-        
-
-
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public int Price { get; set; }
+        public int Quantity { get; set; }
     }
 }

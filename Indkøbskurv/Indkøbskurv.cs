@@ -34,7 +34,9 @@ namespace Indkøbskurv
                 
                 
             }
+            
             return JsonSerializer.Serialize<List<Produkter>>(itemsOrdered);
+
 
         }
     }
